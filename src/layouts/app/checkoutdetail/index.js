@@ -12,6 +12,7 @@ const CheckoutDetail = () => {
     const queryParams = new URLSearchParams(search);
     const [getCheckout, setGetCheckout] = useState([])
     const [isLoading, setIsloading] = useState(true);
+    var arr=[1,2,3,4]
 
     useEffect(() => {
         (async () => {
@@ -57,8 +58,19 @@ const CheckoutDetail = () => {
                     </Fragment>
                     :
                     <Box sx={{ display: "flex", flexDirection: "column", gap: 1, maxWidth: 450 }}>
-                        <Paper >
-
+                        <Paper>
+                            <Box>
+                                <Typography variant='h5'>Order No. -: 12345</Typography>
+                            </Box>
+                            <Box style={{display:'flex',flexDirection:'column',gap:'10px',marginTop:'20px'}}>
+                                {arr.map((e,i)=>{
+                                    return(
+                                        <Typography variant='h5'>Items X 1</Typography>
+                                    )
+                                })}
+                         
+                            </Box>
+                            <Typography sx={{marginTop:'20px',color:'green'}} variant='h4'>Total -: Rs 100 /-</Typography>
                         </Paper>
                     </Box>
             }

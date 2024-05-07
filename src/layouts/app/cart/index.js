@@ -118,7 +118,7 @@ const Cart = () => {
                 <Typography sx={{ fontWeight: "bold", textAlign: "center" }}>
                   1
                 </Typography>
-                  <DeleteIcon sx={{ color: "black" }} onClick={()=>handleDelete(e)} />
+                  <DeleteIcon sx={{ color: "black",cursor:'pointer' }} onClick={()=>handleDelete(e)} />
               </Box>
             </Paper>
           );
