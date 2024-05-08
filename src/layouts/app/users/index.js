@@ -66,7 +66,7 @@ const Users = () => {
                                 <Paper key={index} onClick={() => { Navigate(`/admin/user/detail?user=${value?._id}`) }} sx={{display:'flex', cursor: "pointer",alignItems:'center',justifyContent:'space-between' }}>
                                     <Box sx={{display:'flex',gap:'20px',alignItems:'center'}}>
                                     <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-                                    <Typography variant='h5'>Name</Typography>
+                                    <Typography variant='h5'>{value?.name}</Typography>
                                     </Box>
                                     <Box>
                                     <ChevronRightIcon sx={{color:'black'}}/>

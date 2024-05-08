@@ -14,7 +14,7 @@ export const navigations = (currentUser = {}) => {
     return [
         {
             _id: 1,
-            visible: true,
+            visible: currentUser?.user_type === 'admin',
             isActive: ["/admin/dashboard"],
             navigator: "/admin/dashboard",
             name: "Dashboard",
@@ -30,7 +30,7 @@ export const navigations = (currentUser = {}) => {
         },
         {
             _id: 3,
-            visible: true,
+            visible: currentUser?.user_type === 'admin',
             isActive: ["/admin/product/checkouts", "/admin/product/checkout/detail"],
             navigator: "/admin/product/checkouts?currentPage=1&pageSize=20",
             name: "Checkout",
@@ -38,7 +38,7 @@ export const navigations = (currentUser = {}) => {
         },
         {
             _id: 4,
-            visible: true,
+            visible: currentUser?.user_type === 'admin',
             isActive: ["/admin/users", "/admin/user/detail"],
             navigator: "/admin/users?currentPage=1&pageSize=20",
             name: "Users",
@@ -46,7 +46,7 @@ export const navigations = (currentUser = {}) => {
         },
         {
             _id: 5,
-            visible: true,
+            visible: currentUser?.user_type === 'admin',
             isActive: ["/admin/products/create"],
             navigator: "/admin/products/create",
             name: "New Product",

@@ -12,6 +12,8 @@ import SkeletonLoader from "../../../components/skeletonloader";
 import { ArrowBackRounded } from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { checkout_items } from "../../../services";
+import { useSelector } from "react-redux";
 
 const style = {
     position: 'absolute',
@@ -31,6 +33,8 @@ const Cart = () => {
   const Navigate = useNavigate();
   const [list,setList]=useState([])
   const [open, setOpen] = React.useState(false);
+  const { currentUser } = useSelector((state) => state?.authhelper)
+  console.log('currentUser',currentUser._id)
   const {
     palette: { primary, text },
   } = useTheme();
@@ -38,6 +42,27 @@ const Cart = () => {
   const handleClose = () => setOpen(false);
 
   const arr = [1, 2, 3, 4, 5, 6, 7, 8];
+  const OrderPlaced = async () => {
+    const data={amount:100}
+    await checkout_items(currentUser._id,data)
+      .then((response) => {
+        if (response.status === 200) {
+        //   setGetCheckouts(response?.data?.data);
+        console.log("cart",response.data)
+        handleOpen()
+        setTimeout(()=>{
+            Navigate('/admin/dashboard')
+           },3000)
+
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        // setIsloading(false);
+      });
+  };
   useEffect(()=>{
     setList(arr)
   },[])
@@ -46,12 +71,7 @@ const Cart = () => {
    let newList = list.filter((e)=>e !== id) 
    setList(newList)
   }
-  const handleModel=()=>{
-    handleOpen()
-    setTimeout(()=>{
-     Navigate('/admin/dashboard')
-    },3000)
-  }
+
 
   return (
     <Fragment>
@@ -76,7 +96,7 @@ const Cart = () => {
           gap:'20px'
         }}
       >
-           <Button variant="contained" onClick={handleModel}>Place Order</Button>
+           <Button variant="contained" onClick={OrderPlaced}>Place Order</Button>
         <Typography variant="h4">Total :- Rs 100 /-</Typography>
       </Box>
       <Box

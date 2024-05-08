@@ -21,3 +21,5 @@ export const deleteproduct = (_id) => AXIOS().delete(`/product/${_id}/delete`)
 export const productimageupload = (data) => AXIOS().post(`/user/product/images`, data, { headers: { "content-type": "multipart/form-data" } })
 export const createnewproduct = (data) => AXIOS().post(`/product/new/product`, data)
 export const updateproductbyid = (_id, data) => AXIOS().patch(`/product/update/${_id}`, data)
+export const checkout_items = (_id,data) => AXIOS().post(`/product/checkout/${_id}`, data);
+export const adminsummary = () => AXIOS().get(`/admin/summary`)

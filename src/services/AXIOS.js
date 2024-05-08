@@ -5,7 +5,7 @@ import { LocalStorageManager } from '../utils/localstorage'
 
 export const AXIOS = () => {
     const API = axios.create({
-        baseURL: "http://localhost:8080/api",
+        baseURL: "https://mern-backend-4ucz.onrender.com/api",
     });
 
     API.interceptors.request.use(async function (config) {

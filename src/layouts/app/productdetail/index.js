@@ -12,6 +12,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { productbyid } from "../../../services";
 import SkeletonLoader from "../../../components/skeletonloader";
 import ProductDelete from "../../../components/productdelete";
+import { useSelector } from "react-redux";
 
 const ProductDetail = () => {
   const Navigate = useNavigate();
@@ -23,6 +24,7 @@ const ProductDetail = () => {
   const [getProduct, setGetProduct] = useState(null);
   const [isLoading, setIsloading] = useState(true);
   const [isDelete, setIsDelete] = useState(null);
+  const { currentUser } = useSelector((state) => state?.authhelper);
 
   useEffect(() => {
     (async () => {
@@ -194,25 +196,27 @@ const ProductDetail = () => {
                 >
                   Rs {getProduct?.sale_price} /-
                 </Typography>
-                <Button
-                  variant="contained"
-                  sx={{ marginTop: "20px" }}
-                  onClick={() => {
-                    Navigate('/user/products/Cart');
-                  }}
-                >
-                  Add to cart
-                </Button>
-                {/* {user_type !== "user" ? (
-                            <>
-                              <ProductDelete
-                                isRedirect={false}
-                                // _id={value?._id}
-                                isDelete={isDelete}
-                                setIsDelete={setIsDelete}
-                              />
-                            </>
-                          ) : null} */}
+                {currentUser.user_type === "admin" && (
+                  <>
+                    <ProductDelete
+                      isRedirect={true}
+                      _id={getProduct?._id}
+                      isDelete={isDelete}
+                      setIsDelete={setIsDelete}
+                    />
+                  </>
+                )}
+                {currentUser.user_type !== "admin" && (
+                  <Button
+                    variant="contained"
+                    sx={{ marginTop: "20px" }}
+                    onClick={() => {
+                      Navigate("/user/products/Cart");
+                    }}
+                  >
+                    Add to cart
+                  </Button>
+                )}
               </Box>
             </Box>
             <Box

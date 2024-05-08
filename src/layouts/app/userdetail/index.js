@@ -10,8 +10,9 @@ const UserDetail = () => {
     const Navigate = useNavigate()
     const { search } = useLocation();
     const queryParams = new URLSearchParams(search);
-    const [getUser, setGetUser] = useState([])
+    const [getUser, setGetUser] = useState({})
     const [isLoading, setIsloading] = useState(true);
+    console.log('getUser',getUser)
 
     useEffect(() => {
         (async () => {
@@ -65,27 +66,15 @@ const UserDetail = () => {
                            <Box sx={{width:'100%',marginTop:'10px',display:'flex',flexDirection:'column',gap:'10px'}}>
                              <Box sx={{display:'flex',gap:'10px'}}>
                              <Typography variant='h5'>Email :-</Typography>
-                             <Typography variant='h6'>Ashish Sharma</Typography>
+                             <Typography variant='h6'>{getUser?.email}</Typography>
                              </Box>
                              <Box sx={{display:'flex',gap:'10px'}}>
                              <Typography variant='h5'>Mobile :-</Typography>
-                             <Typography variant='h6'>8109560498</Typography>
+                             <Typography variant='h6'>{getUser?.mobile}</Typography>
                              </Box>
                              <Box sx={{display:'flex',gap:'10px'}}>
                              <Typography variant='h5'>Username :-</Typography>
-                             <Typography variant='h6'>Ashish Sharma</Typography>
-                             </Box>
-                             <Box sx={{display:'flex',gap:'10px'}}>
-                             <Typography variant='h5'>Address :-</Typography>
-                             <Typography variant='h6'>gwalior</Typography>
-                             </Box>
-                             <Box sx={{display:'flex',gap:'10px'}}>
-                             <Typography variant='h5'>Country :-</Typography>
-                             <Typography variant='h6'>India</Typography>
-                             </Box>
-                             <Box sx={{display:'flex',gap:'10px'}}>
-                             <Typography variant='h5'>Pincode :-</Typography>
-                             <Typography variant='h6'>474011</Typography>
+                             <Typography variant='h6'>{getUser?.username}</Typography>
                              </Box>
                            </Box>
                         </Paper>
