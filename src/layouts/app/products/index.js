@@ -24,7 +24,7 @@ const Products = () => {
     totalPage: 0,
     numberOfData: 0,
   });
-  console.log(input)
+  console.log('getProducts',getProducts)
 
   const handleInput=(e)=> {
       const {id,value}=e.target
@@ -80,10 +80,12 @@ const Products = () => {
             data
                 .category
                 .toString()
+                .toLocaleLowerCase()
                 .includes(input?.search.toLocaleLowerCase()) ||
                 data
                 .authour
                 .toString()
+                .toLocaleLowerCase()
                 .includes(input?.search.toLocaleLowerCase())
         )
     })
@@ -92,7 +94,7 @@ const Products = () => {
       }else{
         setGetProducts(filterdata)
       }
-   console.log(getProducts)
+   
   }
 
  

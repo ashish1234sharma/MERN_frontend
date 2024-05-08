@@ -14,7 +14,6 @@ const Dashboard = () => {
         totalCheckOut: 0,
         totalUserCart: 0,
     })
-    console.log("currentUser",currentUser)
 
     useEffect(() => {
         (async () => {
