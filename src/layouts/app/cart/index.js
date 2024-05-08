@@ -12,8 +12,9 @@ import SkeletonLoader from "../../../components/skeletonloader";
 import { ArrowBackRounded } from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { checkout_items } from "../../../services";
+import { CartList, checkout_items, removecartitem } from "../../../services";
 import { useSelector } from "react-redux";
+import axios from "axios";
 
 const style = {
     position: 'absolute',
@@ -31,22 +32,30 @@ const style = {
 
 const Cart = () => {
   const Navigate = useNavigate();
-  const [list,setList]=useState([])
+  const [totalprice,setTotalprice]=useState(0)
   const [open, setOpen] = React.useState(false);
+  const [cartList,setcartList]=useState([])
   const { currentUser } = useSelector((state) => state?.authhelper)
-  console.log('currentUser',currentUser._id)
+  const [isLoading, setIsloading] = useState(true);
+   console.log("cartList",cartList)
   const {
     palette: { primary, text },
   } = useTheme();
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const arr = [1, 2, 3, 4, 5, 6, 7, 8];
+  
   const OrderPlaced = async () => {
-    const data={amount:100}
+    const data = cartList.map(item => ({
+        product_id: item.product_id._id,
+        amount: item.product_id.sale_price,
+        paymentstatus: 'done', 
+        payment_method: 'cash', 
+      }))
+      console.log(data)
     await checkout_items(currentUser._id,data)
       .then((response) => {
-        if (response.status === 200) {
+        if (response.status === 201) {
         //   setGetCheckouts(response?.data?.data);
         console.log("cart",response.data)
         handleOpen()
@@ -63,13 +72,59 @@ const Cart = () => {
         // setIsloading(false);
       });
   };
-  useEffect(()=>{
-    setList(arr)
-  },[])
+useEffect(()=>{
+    getCartdata()
 
-  const handleDelete=(id)=>{
-   let newList = list.filter((e)=>e !== id) 
-   setList(newList)
+},[])
+useEffect(()=>{
+   handleTotalPrice(cartList)
+},[cartList])
+  const getCartdata= async ()=>{
+    let data ={
+        user_id:currentUser?.user_id
+    }
+    await CartList(data)
+        .then((response) => {
+          if (response.status === 200) {
+            console.log(response.data.data)
+            setcartList(response.data.data)
+            handleTotalPrice(response.data.data)
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          setIsloading(false);
+        });
+  }
+  const handleTotalPrice=(data)=>{
+    const total = data.reduce((accumulator, currentValue) => {
+
+        return accumulator + (currentValue.product_id.sale_price || 0); 
+      }, 0);
+      setTotalprice(total)
+  }
+ 
+
+
+  const handleDelete= async (id)=>{
+   let newList = cartList.filter((e)=>e._id !== id) 
+   setcartList(newList)
+   await removecartitem(id)
+   .then((response) => {
+     if (response.status === 200) {
+       console.log(response.data.data)
+    //    setcartList(response.data.data)
+    //    handleTotalPrice(response.data.data)
+     }
+   })
+   .catch((error) => {
+     console.log(error);
+   })
+   .finally(() => {
+     setIsloading(false);
+   });
   }
 
 
@@ -97,7 +152,7 @@ const Cart = () => {
         }}
       >
            <Button variant="contained" onClick={OrderPlaced}>Place Order</Button>
-        <Typography variant="h4">Total :- Rs 100 /-</Typography>
+        <Typography variant="h4">Total :- Rs {totalprice} /-</Typography>
       </Box>
       <Box
         sx={{
@@ -110,9 +165,10 @@ const Cart = () => {
           marginTop: "20px",
         }}
       >
-        {list.map((e, i) => {
+        {cartList?.map((e, i) => {
           return (
             <Paper
+            
               sx={{
                 display: "flex",
                 alignItems: "center",
@@ -122,8 +178,8 @@ const Cart = () => {
               }}
             >
               <Box sx={{ width: "40%" }}>
-                <Typography variant="h5">{e}</Typography>
-                <Typography sx={{ marginTop: "10px" }}>Category</Typography>
+                <Typography variant="h5">{e?.product_id.title}</Typography>
+                <Typography sx={{ marginTop: "10px" }}>{e?.product_id.category}</Typography>
               </Box>
               <Typography sx={{ fontWeight: "bold" }}>X</Typography>
               <Box
@@ -138,7 +194,7 @@ const Cart = () => {
                 <Typography sx={{ fontWeight: "bold", textAlign: "center" }}>
                   1
                 </Typography>
-                  <DeleteIcon sx={{ color: "black",cursor:'pointer' }} onClick={()=>handleDelete(e)} />
+                  <DeleteIcon sx={{ color: "black",cursor:'pointer' }} onClick={()=>handleDelete(e._id)} />
               </Box>
             </Paper>
           );

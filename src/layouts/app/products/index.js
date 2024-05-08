@@ -222,16 +222,6 @@ const Products = () => {
                     Rs {value?.sale_price} /-
                   </Typography>
                 </div>
-                {currentUser.user_type === "admin" && (
-                  <>
-                    <ProductDelete
-                      isRedirect={false}
-                      _id={value?._id}
-                      isDelete={isDelete}
-                      setIsDelete={setIsDelete}
-                    />
-                  </>
-                )}
               </Paper>
             );
           })}

@@ -14,7 +14,7 @@ export const navigations = (currentUser = {}) => {
     return [
         {
             _id: 1,
-            visible: currentUser?.user_type === 'admin',
+            visible: true,
             isActive: ["/admin/dashboard"],
             navigator: "/admin/dashboard",
             name: "Dashboard",

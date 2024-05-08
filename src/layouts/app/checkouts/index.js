@@ -65,7 +65,7 @@ const Checkouts = () => {
             );
           })}
         </Box>
-      ) : !arr.length ? (
+      ) : !getCheckouts.length ? (
         <Fragment>
           <Paper sx={{ maxWidth: 450 }}>
             <Typography variant="h6" textAlign={"center"}>
@@ -82,7 +82,7 @@ const Checkouts = () => {
             maxWidth: 450,
           }}
         >
-          {arr.map((value, index) => {
+          {getCheckouts?.map((value, index) => {
             return (
               <Paper
                 key={index}
@@ -96,8 +96,8 @@ const Checkouts = () => {
                 <Box
                   sx={{ display: "flex", gap: "20px",flexDirection:'column', alignItems: "flex-start" }}
                 >
-                  <Typography variant="h5">Order Id -: 12345</Typography>
-                  <Typography variant="h5">UserName -: Ashish123</Typography>
+                  <Typography variant="h5">Order Id -: {value?._id}</Typography>
+                  <Typography variant="h5">Title -: {value?.product_id?.title}</Typography>
                 </Box>
                 <Box>
                   <ChevronRightIcon sx={{ color: "black" }} />

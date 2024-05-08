@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { ArrowBackRounded } from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router-dom";
-import { productbyid } from "../../../services";
+import { AddCart, productbyid } from "../../../services";
 import SkeletonLoader from "../../../components/skeletonloader";
 import ProductDelete from "../../../components/productdelete";
 import { useSelector } from "react-redux";
@@ -25,6 +25,7 @@ const ProductDetail = () => {
   const [isLoading, setIsloading] = useState(true);
   const [isDelete, setIsDelete] = useState(null);
   const { currentUser } = useSelector((state) => state?.authhelper);
+  console.log('getProduct',getProduct)
 
   useEffect(() => {
     (async () => {
@@ -32,6 +33,7 @@ const ProductDetail = () => {
         .then((response) => {
           if (response.status === 200) {
             setGetProduct(response?.data);
+
           }
         })
         .catch((error) => {
@@ -42,6 +44,26 @@ const ProductDetail = () => {
         });
     })();
   }, []);
+
+  const handleCart=async ()=>{
+    let data={
+        product_id: getProduct?._id,
+        user_id: currentUser._id
+    }
+    await AddCart(data)
+        .then((response) => {
+          if (response.status === 201) {
+            Navigate("/user/products/Cart");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          setIsloading(false);
+        });
+  
+  }
 
   return (
     <Fragment>
@@ -210,9 +232,7 @@ const ProductDetail = () => {
                   <Button
                     variant="contained"
                     sx={{ marginTop: "20px" }}
-                    onClick={() => {
-                      Navigate("/user/products/Cart");
-                    }}
+                    onClick={handleCart}
                   >
                     Add to cart
                   </Button>
