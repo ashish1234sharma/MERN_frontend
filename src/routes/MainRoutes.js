@@ -50,40 +50,22 @@ const MainRoutes = () => {
             element={<ResetPassword />}
           />
 
-          {currentUser?.user_type === "admin" ? (
             <Route
               path="/"
               index={true}
               element={
-                <Navigate to={"/admin/dashboard"} replace={true} index={true} />
+                <Navigate to={ currentUser?.user_type === "admin" ? "/admin/dashboard" :'/admin/products?currentPage=1&pageSize=20'} replace={true} index={true} />
               }
             />
-          ) : (
-            <Route
-              path="/"
-              index={true}
-              element={
-                <Navigate to={"/admin/products"} replace={true} index={true} />
-              }
-            />
-          )}
-          {currentUser?.user_type === "admin" ? (
+          
             <Route
               path="*"
               index={true}
               element={
-                <Navigate to={"/admin/dashboard"} replace={true} index={true} />
+                <Navigate to={ currentUser?.user_type === "admin" ? "/admin/dashboard" :'/admin/products?currentPage=1&pageSize=20'} replace={true} index={true} />
               }
             />
-          ) : (
-            <Route
-              path="*"
-              index={true}
-              element={
-                <Navigate to={"/admin/products"} replace={true} index={true} />
-              }
-            />
-          )}
+        
         </Routes>
       </Navigation>
     </Fragment>
