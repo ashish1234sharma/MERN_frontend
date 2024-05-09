@@ -42,9 +42,7 @@ const Products = () => {
 
   const getAllProducts = async () => {
     await allproducts(
-      `currentPage=${queryParams.get("currentPage")}&pageSize=${queryParams.get(
-        "pageSize"
-      )}`
+      `currentPage=1&pageSize=20`
     )
       .then((response) => {
         if (response.status === 200) {
